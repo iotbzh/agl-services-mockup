@@ -1,0 +1,46 @@
+{
+  "$schema": "http://iot.bzh/download/public/schema/json/ctl-schema.json",
+  "metadata": {
+    "uid": "can_emulator",
+    "version": "1.0",
+    "api": "can_emul",
+    "info": "Test for XDS Data collection binding"
+  },
+  "plugins": [{
+    "uid": "can_emul",
+    "info": "Plugin to handle interface with can_emul",
+    "spath": "./lib/plugins:./var",
+    "libs": [
+      "can_emulator.ctlso",
+      "can_emulator.lua"
+    ]
+  }],
+
+  "onload": [{
+    "uid": "can_emul/_run_onload",
+    "action": "lua://can_emul#_run_onload_"
+  }],
+
+  "controls": [{
+      "uid": "ping",
+      "action": "plugin://can_emul#ping"
+    },
+    {
+      "uid": "start",
+      "action": "lua://can_emul#_start_can_emulator_"
+    },
+    {
+      "uid": "config",
+      "action": "lua://can_emul#_config_can_"
+    },
+    {
+      "uid": "status",
+      "action": "lua://can_emul#_status_can_"
+    }
+  ],
+
+  "events": [{
+    "uid": "can_emul/can0",
+    "action": "lua://can_emul#_evt_catcher_"
+  }]
+}

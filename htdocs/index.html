@@ -1,0 +1,29 @@
+<html>
+
+<head>
+    <title>XDS data collector binding Test</title>
+    <link rel="stylesheet" href="iotbzh-Binding.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <script type="text/javascript" src="AFB-websock.js"></script>
+    <script type="text/javascript" src="iotbzh-Binding.js"></script>
+</head>
+
+<body class="page-content" onload="init()">
+
+    <img src="assets/iot-bzh-logo-small.png">
+
+    <h1>XDS data collector prototype Test</h1>
+
+    <button id="connected" onclick="init()">Binder WS Fail</button>
+    <button id="monitoring" onclick="window.open('/monitoring/monitor.html','_monitor_ctl')">Debug/Monitoring</a>
+    </button>
+
+    <br>
+    <br>
+
+    <div>
+        <button onclick="callbinder('can_app','start' ,{});">Start CAN app</button>
+        </li>
+
+    </div>
+</body>

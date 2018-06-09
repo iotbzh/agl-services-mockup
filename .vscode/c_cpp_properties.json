@@ -1,0 +1,71 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}",
+                "${workspaceFolder}/afb-helpers",
+                "${workspaceFolder}/app-controller/ctl-lib",
+                "/opt/AGL/include",
+                "/usr/include/c++/4.8",
+                "/usr/include/c++/4.8/x86_64-suse-linux",
+                "/usr/include/c++/4.8/backward",
+                "/usr/lib64/gcc/x86_64-suse-linux/4.8/include",
+                "/usr/local/include",
+                "/usr/lib64/gcc/x86_64-suse-linux/4.8/include-fixed",
+                "/usr/x86_64-suse-linux/include",
+                "/usr/include"
+            ],
+            "defines": [
+              "CONTROL_CONFIG_PATH=\"./build/package/etc:/opt/agl_services_mockup/etc\"",
+              "CONTROL_SUPPORT_LUA",
+              "AFB_BINDING_PREV3",
+              "USE_API_DYN"
+            ],
+            "intelliSenseMode": "clang-x64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "${workspaceFolder}/afb-helpers",
+                    "${workspaceFolder}/app-controller/ctl-lib",
+                    "/opt/AGL/include",
+                    "/usr/include/c++/4.8",
+                    "/usr/include/c++/4.8/x86_64-suse-linux",
+                    "/usr/include/c++/4.8/backward",
+                    "/usr/lib64/gcc/x86_64-suse-linux/4.8/include",
+                    "/usr/local/include",
+                    "/usr/lib64/gcc/x86_64-suse-linux/4.8/include-fixed",
+                    "/usr/x86_64-suse-linux/include",
+                    "/usr/include"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++14"
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include",
+                "${workspaceFolder}"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "intelliSenseMode": "msvc-x64",
+            "browse": {
+                "path": [
+                    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        }
+    ],
+    "version": 4
+}
