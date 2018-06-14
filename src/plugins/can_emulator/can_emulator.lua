@@ -20,11 +20,11 @@
   Test commands:
 
     afb-client-demo 'localhost:1111/api?token=HELLO&uuid=magic'
-    test_emul_can start
+    can_emul start
 
-    test_emul_can start {"delay": 100, "count": 20, "repeat": 4, "repeat_delay": 5000}
+    can_emul start {"delay": 100, "count": 20, "repeat": 4, "repeat_delay": 5000}
 
-    test_emul_can start {"delay": 100, "count": 20, "repeat": 4, "repeat_delay": 5000, "sleeptype": "actif"}
+    can_emul start {"delay": 100, "count": 20, "repeat": 4, "repeat_delay": 5000, "sleeptype": "actif"}
 --]]
 _MyContext = {}
 
@@ -79,14 +79,15 @@ function _status_can_(source, args, query)
 end
 
 local clock = os.clock
-function sleep_ACTIF(n) -- seconds
+function sleep_ACTIF(n) -- milliseconds
+    n = tonumber(n)/1000
     local t0 = clock()
     while clock() - t0 <= n do
     end
 end
 
 function sleep_OS(n)
-    os.execute("sleep " .. tonumber(n))
+    os.execute("sleep " .. tonumber(n)/1000)
 end
 
 function _Timer_Test_CB(source, timer, context)
@@ -118,9 +119,9 @@ function _Timer_Test_CB(source, timer, context)
             AFB:notice(source, "Repeat timer %s", Dump_Table(_MyContext["query"]["repeat"]))
 
             if _MyContext["query"]["sleeptype"] == "actif" then
-                sleep_ACTIF(_MyContext["query"]["repeat_delay"] / 1000)
+                sleep_ACTIF(_MyContext["query"]["repeat_delay"])
             else
-                sleep_OS(_MyContext["query"]["repeat_delay"] / 1000)
+                sleep_OS(_MyContext["query"]["repeat_delay"])
             end
 
             AFB:timerset(source, _MyContext["timer"], "_Timer_Test_CB", _MyContext["context"])
@@ -132,21 +133,6 @@ function _Timer_Test_CB(source, timer, context)
 
     -- note when timerCB return!=0 timer is kill
     return 0
-end
-
-function _Timer_Test_repeat_CB(source, timer, context)
-    local evtinfo = AFB:timerget(timer)
-
-    AFB:debug(source, "[-- _Timer_Test_repeat --] evtInfo=%s, context=%s", Dump_Table(evtinfo), Dump_Table(context))
-
-    if evtinfo.count > 0 then
-        AFB:timerset(source, _MyContext["timer"], "_Timer_Test_CB", _MyContext["context"])
-        return 0
-    end
-
-    -- stop timer
-    AFB:debug(source, "Repeat timer end !")
-    return -1
 end
 
 function _start_can_emulator_(source, args, query)

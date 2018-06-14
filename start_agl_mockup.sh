@@ -1,5 +1,6 @@
 #!/bin/bash
 
+AGL_MOCKDIR="/tmp/agl_mockup"
 REPO_DIR=$(cd $(dirname $0) && pwd)
 
 if [ "$1" = "-d" ] || [ "$1" = "--dry" ]; then
@@ -7,10 +8,12 @@ if [ "$1" = "-d" ] || [ "$1" = "--dry" ]; then
     shift
 fi
 
+pids=""
+
 function daemon() {
     name=$1
     port=$2
-    logfile=$3
+    logmode=$3
     shift; shift; shift
     opts=$*
 
@@ -19,8 +22,11 @@ function daemon() {
         --token= ${opts}"
 
     echo -n "Start ${name}... "
-    if [ "$DRY" != "" ] || [ "$logfile" = " " ]; then
+    pid=""
+    logfile=${AGL_MOCKDIR}/${name}.log
+    if [ "$DRY" != "" ] || [ "$logmode" = "none" ]; then
         ${DRY} ${CMD}
+        pid=$!
         logfile="null"
     elif [ "$logfile" = "bg" ]; then
         ${DRY} ${CMD} &
@@ -30,35 +36,60 @@ function daemon() {
         pid=$!
     fi
     echo "(pid $pid, logfile $logfile )"
+
+    [ "$pid" != "" ] && pids="${pids} ${pid}"
+
     ${DRY} sleep 0.5
 }
 
 trap "cleanExit" 0 1 2 15
 cleanExit ()
 {
-    ${DRY} pkill -9 afb-can_emulat
-    ${DRY} pkill -9 afb-can_app
+    for pp in ${pids}; do
+        ${DRY} kill -9 ${pp}
+    done
+ #   ${DRY} pkill -9 afb-can_emulat
+ #   ${DRY} pkill -9 afb-can_app
 }
 
 # Check Supervisor
 if [ "$(ps -ef |grep afs-supervisor |wc -l)" != "2" ]; then
     echo "Please start supervisor in another shell: "
-    echo " afs-supervisor --port 1712 --token HELLO --ws-server=unix:/tmp/supervisor -vv"
+    echo " afs-supervisor --port 1712 --token HELLO --ws-server=unix:${AGL_MOCKDIR}/supervisor -vv"
     exit 1
 fi
 
-# can emulator
-daemon afb-can_emulator 1111 /tmp/can_emulator.log -vvv --ws-server unix:/tmp/can_emul
+[ ! -d "$AGL_MOCKDIR" ] && mkdir -p "$AGL_MOCKDIR"
 
-# can app
-daemon afb-can_app 2222 bg -vv --ws-client unix:/tmp/can_emul
+# GPS emulator & app
+daemon afb-gps_emulator 1101 log -vvv --ws-server unix:${AGL_MOCKDIR}/gps_emul
+daemon afb-gps_app 1102 log -vv --ws-client unix:${AGL_MOCKDIR}/gps_emul
 
+# CAN emulator & app
+daemon afb-can_emulator 2201 log -vvv --ws-server unix:${AGL_MOCKDIR}/can_emul
+daemon afb-can_app 2202 log -vv --ws-client unix:${AGL_MOCKDIR}/can_emul
+#daemon afb-can_app 2202 bg -vv --ws-client unix:${AGL_MOCKDIR}/can_emul --monitoring
+
+#echo "Wait 5 seconds..."
+#${DRY} sleep 5
+echo "Press any key to send 'can_app start' command..."
+${DRY} read
+
+echo "Send GPS start..."
+rate=1000
+${DRY} afb-client-demo 'localhost:1102/api?token=XXX&uuid=magic' gps_app start '{"sample_rate": '$rate'}'
+
+echo "Send CAN start..."
 scenario=$1
 [ "$scenario" = "" ] && scenario=1
-${DRY} afb-client-demo 'localhost:2222/api?token=XXX&uuid=magic' can_app start '{"scenario": '${scenario}'}'
+${DRY} afb-client-demo 'localhost:2202/api?token=XXX&uuid=magic' can_app start '{"scenario": '${scenario}'}'
 
-key=
-while [ "$key" != "q" ]; do
-    echo "Press 'q' to quit"
-    read key
-done
+if [ "${DRY}" != "echo" ]; then
+    key=
+    while [ "$key" != "q" ]; do
+        echo "Press 'q' to quit"
+        read key
+    done
+fi
+
+echo "Exiting start_agl_mockup script..."

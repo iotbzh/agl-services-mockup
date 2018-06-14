@@ -24,11 +24,11 @@ function _run_onload_(source)
     AFB:notice(source, "--InLua-- ENTER _run_onload_ CAN Application\n")
 
     local qr = {
-        ["delay"] = 700
+        ["delay"] = 700,
+        ["scenario"] = 0
     }
 
-    -- SEB Voir Fulup/Jon :
-    -- marche pas car pb source-request = 0 dans afb_request_success
+    -- Autostart onload (useful for debug)
     -- _start_app_(source, nil, qr)
 
     return 0
@@ -37,7 +37,7 @@ end
 function _evt_catcher_(source, action, event)
     AFB:notice(source, "RECV EVENT=%s", Dump_Table(event))
 
-    if event.count == 10 then
+    if (event.count % 10) == 0 then
         AFB:notice(source, "Request can_emul status")
         local err, response = AFB:servsync(source, "can_emul", "status", {})
         if (err) then
@@ -45,6 +45,13 @@ function _evt_catcher_(source, action, event)
             return 1
         end
     end
+
+    if ((event.count % 10) == 0) and (math.random(5) == 1) then
+        AFB:notice(source, "Request can_emul config with failure")
+        local err, response = AFB:servsync(source, "can_emul", "config", {})
+        AFB:debug(source, "--LUA:_start_app_ config status response=%s", response)
+    end
+
 end
 
 function _start_app_(source, args, query)
@@ -63,24 +70,30 @@ function _start_app_(source, args, query)
         query.scenario = 1
     end
 
-    if query.scenario == 1 then
-        query.delay = 200
+    if query.scenario == 0 then
+        query.delay = 100
         query.count = 30
-        query.sleeptype = "actif"
-        query["repeat_delay"] = 5000
-        query["repeat"] = 10
-    elseif query.scenario == 2 then
-        query.delay = 200
-        query.count = 30
-        query.sleeptype = "os"
-        query["repeat_delay"] = 5000
-        query["repeat"] = 10
-    elseif query.scenario == 3 then
-        query.delay = 10
-        query.count = 100
         query.sleeptype = "actif"
         query["repeat_delay"] = 2000
-        query["repeat"] = 10
+        query["repeat"] = 100
+    elseif query.scenario == 1 then
+        query.delay = 1000
+        query.count = 100
+        query.sleeptype = "actif"
+        query["repeat_delay"] = 5000
+        query["repeat"] = 100
+    elseif query.scenario == 2 then
+        query.delay = 100
+        query.count = 200
+        query.sleeptype = "os"
+        query["repeat_delay"] = 5000
+        query["repeat"] = 500
+    elseif query.scenario == 3 then
+        query.delay = 10
+        query.count = 200
+        query.sleeptype = "actif"
+        query["repeat_delay"] = 2000
+        query["repeat"] = 500
     end
 
     AFB:notice(source, "Start scenario %d : %s\n", query.scenario, Dump_Table(query))
@@ -91,7 +104,9 @@ function _start_app_(source, args, query)
         return 1
     end
 
-    AFB:success(source, request, {["status"] = "CAN app running"})
+    --if request ~= nil then
+    AFB:success(source, request, {["status"] = "CAN app running", ["scenario"]=query.scenario})
+    --end
 end
 
 function sleep_OS(n)

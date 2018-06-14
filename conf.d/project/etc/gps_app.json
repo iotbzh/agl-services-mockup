@@ -1,0 +1,36 @@
+{
+  "$schema": "http://iot.bzh/download/public/schema/json/ctl-schema.json",
+  "metadata": {
+    "uid": "gps_app",
+    "version": "1.0",
+    "api": "gps_app",
+    "info": "GPS service application used for testing"
+  },
+  "plugins": [{
+    "uid": "gps_app",
+    "info": "Plugin to handle interface with gps_app",
+    "spath": "./lib/plugins:./var",
+    "libs": [
+      "gps_app.ctlso",
+      "gps_app.lua"
+    ]
+  }],
+
+  "onload": [{
+    "uid": "gps_app/run_onload",
+    "action": "lua://gps_app#_run_onload_"
+  }],
+
+  "controls": [{
+    "uid": "ping",
+    "action": "plugin://gps_app#ping"
+  }, {
+    "uid": "start",
+    "action": "lua://gps_app#_start_app_"
+  }],
+
+  "events": [{
+    "uid": "gps_emul/gps0",
+    "action": "lua://gps_app#_evt_catcher_"
+  }]
+}

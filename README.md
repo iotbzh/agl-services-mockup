@@ -4,7 +4,10 @@ A test binding used to test XDS data collection.
 
 ```bash
 
+# Start AGL mockup bindings
 ./start_agl_mockup.sh
 
-afb-client-demo 'localhost:2222/api?token=XXX&uuid=magic' can_app start
+# Start AGL mockup bindings using scenario 2
+./start_agl_mockup.sh 2
+
 ```

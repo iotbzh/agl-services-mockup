@@ -1,0 +1,46 @@
+{
+  "$schema": "http://iot.bzh/download/public/schema/json/ctl-schema.json",
+  "metadata": {
+    "uid": "gps_emulator",
+    "version": "1.0",
+    "api": "gps_emul",
+    "info": "Test for XDS Data collection binding"
+  },
+  "plugins": [{
+    "uid": "gps_emul",
+    "info": "Plugin to handle interface with gps_emul",
+    "spath": "./lib/plugins:./var",
+    "libs": [
+      "gps_emulator.ctlso",
+      "gps_emulator.lua"
+    ]
+  }],
+
+  "onload": [{
+    "uid": "gps_emul/_run_onload",
+    "action": "lua://gps_emul#_run_onload_"
+  }],
+
+  "controls": [{
+      "uid": "ping",
+      "action": "plugin://gps_emul#ping"
+    },
+    {
+      "uid": "start",
+      "action": "lua://gps_emul#_start_gps_emulator_"
+    },
+    {
+      "uid": "config",
+      "action": "lua://gps_emul#_config_gps_"
+    },
+    {
+      "uid": "status",
+      "action": "lua://gps_emul#_status_gps_"
+    }
+  ],
+
+  "events": [{
+    "uid": "gps_emul/gps0",
+    "action": "lua://gps_emul#_evt_catcher_"
+  }]
+}
