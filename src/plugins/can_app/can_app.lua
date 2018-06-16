@@ -104,8 +104,8 @@ function _start_app_(source, args, query)
         return 1
     end
 
-    --if request ~= nil then
-    AFB:success(source, request, {["status"] = "CAN app running", ["scenario"]=query.scenario})
+    --FIXME if request ~= nil then
+    AFB:success(source, {["status"] = "CAN app running", ["scenario"]=query.scenario})
     --end
 end
 

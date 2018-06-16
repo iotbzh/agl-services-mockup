@@ -61,7 +61,7 @@ function _config_gps_(source, args, query)
         ["status"] = "gps0 configured",
     }
 
-    AFB:success(source, request, res)
+    AFB:success(source, res)
     return 0
 end
 
@@ -79,7 +79,7 @@ function _status_gps_(source, args, query)
         ["channel"] = "gps0",
         ["sample_rate"] = _MyContext.sample_rate
     }
-    AFB:success(source, request, sts)
+    AFB:success(source, sts)
     return 0
 end
 
@@ -169,6 +169,6 @@ function _start_gps_emulator_(source, args, query)
     -- settimer take a table with delay+count as input (count==0 means infinite)
     AFB:timerset(source, myTimer, "_Timer_Test_CB", _MyContext.context)
 
-    AFB:success(source, request, myTimer)
+    AFB:success(source, myTimer)
     return 0
 end

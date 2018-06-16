@@ -48,8 +48,6 @@ cleanExit ()
     for pp in ${pids}; do
         ${DRY} kill -9 ${pp}
     done
- #   ${DRY} pkill -9 afb-can_emulat
- #   ${DRY} pkill -9 afb-can_app
 }
 
 # Check Supervisor

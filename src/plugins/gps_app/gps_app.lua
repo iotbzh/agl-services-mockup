@@ -90,10 +90,10 @@ function _start_app_(source, args, query)
         return 1
     end
 
-    AFB:notice(source, "SEB request %s : %s", type(request), Dump_Table(request))
-    if request ~= nil then
-        AFB:success(source, request, {["status"] = "GPS app running", ["config"] = cfg})
-    end
+    -- SEB FIXME: but how ??? no way to access source.request
+    -- if source.request ~= nil then
+        AFB:success(source, {["status"] = "GPS app running", ["config"] = cfg})
+    --end
 end
 
 function sleep(n)

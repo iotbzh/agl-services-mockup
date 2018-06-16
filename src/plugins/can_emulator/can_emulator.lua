@@ -57,7 +57,7 @@ function _config_can_(source, args, query)
         ["channel"] = _can_data[1].chan
     }
 
-    AFB:success(source, request, res)
+    AFB:success(source, res)
     return 0
 end
 
@@ -74,12 +74,12 @@ function _status_can_(source, args, query)
 
     AFB:debug(source, "SEB status %s", Dump_Table(sts))
 
-    AFB:success(source, request, sts)
+    AFB:success(source, sts)
     return 0
 end
 
-local clock = os.clock
 function sleep_ACTIF(n) -- milliseconds
+    local clock = os.clock
     n = tonumber(n)/1000
     local t0 = clock()
     while clock() - t0 <= n do
@@ -189,7 +189,7 @@ function _start_can_emulator_(source, args, query)
     end
     _MyContext["query"] = query
 
-    AFB:success(source, request, myTimer)
+    AFB:success(source, myTimer)
     return 0
 end
 
