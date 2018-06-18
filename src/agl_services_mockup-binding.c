@@ -80,7 +80,7 @@ void ctrlapi_auth(AFB_ReqT request)
 
 static AFB_ApiVerbs CtrlApiVerbs[] = {
     /* VERB'S NAME         FUNCTION TO CALL         SHORT DESCRIPTION */
-    { .verb = "ping", .callback = ctrlapi_ping, .info = "ping test for API" },
+    { .verb = "ping-global", .callback = ctrlapi_ping, .info = "ping test for API" },
 //    { .verb = "tstcan", .callback = ctrlapi_test_can, .info = "test can" },
     { .verb = "auth", .callback = ctrlapi_auth, .info = "Authenticate session to raise Level Of Assurance of the session" },
     { .verb = NULL } /* marker for end of the array */
