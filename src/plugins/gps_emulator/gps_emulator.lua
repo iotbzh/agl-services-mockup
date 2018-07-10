@@ -31,7 +31,7 @@ _MyContext = {
 }
 
 function _run_onload_(source)
-    AFB:notice(source, "--InLua-- ENTER _run_onload_ EMULATOR GPS\n")
+    AFB:notice(source, "--InLua-- ENTER _run_onload_ GPS EMULATOR\n")
 
     return 0
 end

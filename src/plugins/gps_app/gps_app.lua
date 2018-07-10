@@ -21,7 +21,7 @@
     afb-client-demo 'localhost:2222/api?token=XXX&uuid=magic' can_app start
 --]]
 function _run_onload_(source)
-    AFB:notice(source, "--InLua-- ENTER _run_onload_ CAN Application\n")
+    AFB:notice(source, "--InLua-- ENTER _run_onload_ GPS Application\n")
 
     local qr = {
         ["sample_rate"] = 2000
