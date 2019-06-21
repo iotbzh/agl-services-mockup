@@ -1,5 +1,5 @@
 ###########################################################################
-# Copyright 2018 IoT.bzh
+# Copyright 2018-2019 IoT.bzh
 #
 # author: Sebastien Douheret <sebastien@iot.bzh>
 #
@@ -27,10 +27,12 @@ set(PROJECT_AUTHOR "Sebastien Douheret")
 set(PROJECT_AUTHOR_MAIL "sebastien@iot.bzh")
 set(PROJECT_LICENSE "APL2.0")
 set(PROJECT_LANGUAGES "C")
+set(API_NAME "agl_services_mockup")
+set(PROJECT_VERSION "0.1")
 
-# Where are stored default templates files from submodule or subtree app-templates in your project tree
+# Where are stored the project configuration files
 # relative to the root project directory
-set(PROJECT_APP_TEMPLATES_DIR "conf.d/app-templates")
+set(PROJECT_CMAKE_CONF_DIR "conf.d")
 
 # Where are stored your external libraries for your project. This is 3rd party library that you don't maintain
 # but used and must be built and linked.
@@ -72,6 +74,8 @@ set (PKG_REQUIRED_LIST
 	libsystemd>=222
 	afb-daemon>=4.0
 	libmicrohttpd>=0.9.55
+	appcontroller
+	afb-helpers
 )
 
 # Prefix path where will be installed the files
@@ -112,14 +116,14 @@ set(INSTALL_PREFIX $ENV{HOME}/opt)
 # CACHE STRING "Compilation flags for PROFILING build type.")
 #set(DEBUG_COMPILE_OPTIONS
 # -g
+# -O0
 # -ggdb
-# -Wp,-U_FORTIFY_SOURCE
 # CACHE STRING "Compilation flags for DEBUG build type.")
-#set(CCOV_COMPILE_OPTIONS
+#set(COVERAGE_COMPILE_OPTIONS
 # -g
-# -O2
+# -O0
 # --coverage
-# CACHE STRING "Compilation flags for CCOV build type.")
+# CACHE STRING "Compilation flags for COVERAGE build type.")
 #set(RELEASE_COMPILE_OPTIONS
 # -g
 # -O2
@@ -129,7 +133,7 @@ set(CONTROL_SUPPORT_LUA 1)
 add_definitions(-DCONTROL_PLUGIN_PATH="${CMAKE_BINARY_DIR}/package/lib/plugins:${CMAKE_BINARY_DIR}/package/var:${INSTALL_PREFIX}/${PROJECT_NAME}/lib/plugins")
 add_definitions(-DCONTROL_CONFIG_PATH="${CMAKE_BINARY_DIR}/package/etc:${INSTALL_PREFIX}/${PROJECT_NAME}/etc")
 add_definitions(-DCTL_PLUGIN_MAGIC=1286576532)
-add_definitions(-DUSE_API_DYN=1 -DAFB_BINDING_VERSION=3 -DAFB_BINDING_WANT_DYNAPI)
+add_definitions(-DAFB_BINDING_VERSION=3)
 
 # (BUG!!!) as PKG_CONFIG_PATH does not work [should be an env variable]
 # ---------------------------------------------------------------------
@@ -215,5 +219,8 @@ set(PACKAGE_MESSAGE "Install widget file using in the target : afm-util install 
 
 # This include is mandatory and MUST happens at the end
 # of this file, else you expose you to unexpected behavior
+#
+# This CMake module could be found at the following url:
+# https://gerrit.automotivelinux.org/gerrit/#/admin/projects/src/cmake-apps-module
 # -----------------------------------------------------------
-include(${PROJECT_APP_TEMPLATES_DIR}/cmake/common.cmake)
+include(CMakeAfbTemplates)

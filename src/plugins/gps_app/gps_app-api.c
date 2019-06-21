@@ -34,7 +34,7 @@ CTLP_ONLOAD(plugin, ret)
 
 CTLP_CAPI(ping, source, argsJ, eventJ)
 {
-    AFB_ReqSuccess(source->request, json_object_new_string("gps_app pong"), NULL);
+    afb_req_success(source->request, json_object_new_string("gps_app pong"), NULL);
     return 0;
 }
 

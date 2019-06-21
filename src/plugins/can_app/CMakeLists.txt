@@ -30,12 +30,6 @@ PROJECT_TARGET_ADD(can_app)
 				OUTPUT_NAME ${TARGET_NAME}
 		)
 
-		# Library dependencies (include updates automatically)
-		TARGET_LINK_LIBRARIES(${TARGET_NAME}
-				afb-helpers
-				${link_libraries}
-		)
-
 		target_include_directories(${TARGET_NAME}
 		PRIVATE "${CMAKE_SOURCE_DIR}/app-controller/ctl-lib")
 
