@@ -38,16 +38,15 @@ set(PROJECT_CMAKE_CONF_DIR "conf.d")
 # but used and must be built and linked.
 # set(PROJECT_LIBDIR "libs")
 
+# Where are stored data for your application. Pictures, static resources must be placed in that folder.
+# set(PROJECT_RESOURCES "data")
+
 # Which directories inspect to find CMakeLists.txt target files
 # set(PROJECT_SRC_DIR_PATTERN "*")
 
 # Compilation Mode (DEBUG, RELEASE)
 # ----------------------------------
-set(CMAKE_BUILD_TYPE "DEBUG")
-#set(USE_EFENCE 1)
-
-# Helpers Submodule parameters
-# set(AFB_HELPERS_QTWSCLIENT OFF CACHE BOOL "Adds QT5 WebSocket helpers from submodule")
+set(BUILD_TYPE "DEBUG")
 
 # Kernel selection if needed. You can choose between a
 # mandatory version to impose a minimal version.
@@ -78,11 +77,6 @@ set (PKG_REQUIRED_LIST
 	afb-helpers
 )
 
-# Prefix path where will be installed the files
-# Default: /usr/local (need root permission to write in)
-# ------------------------------------------------------
-set(INSTALL_PREFIX $ENV{HOME}/opt)
-
 # Customize link option
 # -----------------------------
 #list(APPEND link_libraries -an-option)
@@ -93,41 +87,13 @@ set(INSTALL_PREFIX $ENV{HOME}/opt)
 # Either separate options with ";", or each options must be quoted separately
 # DO NOT PUT ALL OPTION QUOTED AT ONCE , COMPILATION COULD FAILED !
 # ----------------------------------------------------------------------------
-#set(COMPILE_OPTIONS
-# -Wall
-# -Wextra
-# -Wconversion
-# -Wno-unused-parameter
-# -Wno-sign-compare
-# -Wno-sign-conversion
-# -Werror=maybe-uninitialized
-# -Werror=implicit-function-declaration
-# -ffunction-sections
-# -fdata-sections
-# -fPIC
-# CACHE STRING "Compilation flags")
+#set(COMPILE_OPTIONS "-Wall" "-Wextra" "-Wconversion" "-Wno-unused-parameter" "-Wno-sign-compare" "-Wno-sign-conversion" "-Werror=maybe-uninitialized" "-Werror=implicit-function-declaration" "-ffunction-sections" "-fdata-sections" "-fPIC" CACHE STRING "Compilation flags")
 #set(C_COMPILE_OPTIONS "" CACHE STRING "Compilation flags for C language.")
 #set(CXX_COMPILE_OPTIONS "" CACHE STRING "Compilation flags for C++ language.")
-#set(PROFILING_COMPILE_OPTIONS
-# -g
-# -O0
-# -pg
-# -Wp,-U_FORTIFY_SOURCE
-# CACHE STRING "Compilation flags for PROFILING build type.")
-#set(DEBUG_COMPILE_OPTIONS
-# -g
-# -O0
-# -ggdb
-# CACHE STRING "Compilation flags for DEBUG build type.")
-#set(COVERAGE_COMPILE_OPTIONS
-# -g
-# -O0
-# --coverage
-# CACHE STRING "Compilation flags for COVERAGE build type.")
-#set(RELEASE_COMPILE_OPTIONS
-# -g
-# -O2
-# CACHE STRING "Compilation flags for RELEASE build type.")
+#set(PROFILING_COMPILE_OPTIONS "-g" "-O0" "-pg" "-Wp,-U_FORTIFY_SOURCE" CACHE STRING "Compilation flags for PROFILING build type.")
+#set(DEBUG_COMPILE_OPTIONS "-g" "-ggdb" "-Wp,-U_FORTIFY_SOURCE" CACHE STRING "Compilation flags for DEBUG build type.")
+#set(CCOV_COMPILE_OPTIONS "-g" "-O2" "--coverage" CACHE STRING "Compilation flags for CCOV build type.")
+#set(RELEASE_COMPILE_OPTIONS "-g" "-O2" CACHE STRING "Compilation flags for RELEASE build type.")
 
 set(CONTROL_SUPPORT_LUA 1)
 add_definitions(-DCONTROL_PLUGIN_PATH="${CMAKE_BINARY_DIR}/package/lib/plugins:${CMAKE_BINARY_DIR}/package/var:${INSTALL_PREFIX}/${PROJECT_NAME}/lib/plugins")
@@ -137,8 +103,9 @@ add_definitions(-DAFB_BINDING_VERSION=3)
 
 # (BUG!!!) as PKG_CONFIG_PATH does not work [should be an env variable]
 # ---------------------------------------------------------------------
-set(CMAKE_PREFIX_PATH ${INSTALL_PREFIX}/lib64/pkgconfig ${INSTALL_PREFIX}/lib/pkgconfig)
-set(LD_LIBRARY_PATH ${INSTALL_PREFIX}/lib64 ${INSTALL_PREFIX}/lib)
+set(INSTALL_PREFIX $ENV{HOME}/opt)
+set(CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX}/lib64/pkgconfig ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig)
+set(LD_LIBRARY_PATH ${CMAKE_INSTALL_PREFIX}/lib64 ${CMAKE_INSTALL_PREFIX}/lib)
 
 # Optional location for config.xml.in
 # -----------------------------------

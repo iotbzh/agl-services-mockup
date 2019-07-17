@@ -6,31 +6,37 @@
     "api": "can_app",
     "info": "CAN service application used for testing"
   },
-  "plugins": [{
-    "uid": "can_app",
-    "info": "Plugin to handle interface with can_app",
-    "spath": "./lib/plugins:./var",
-    "libs": [
-      "can_app.ctlso",
-      "can_app.lua"
-    ]
-  }],
-
-  "onload": [{
-    "uid": "can_app/run_onload",
-    "action": "lua://can_app#_run_onload_"
-  }],
-
-  "controls": [{
-    "uid": "ping",
-    "action": "plugin://can_app#ping"
-  }, {
-    "uid": "start",
-    "action": "lua://can_app#_start_app_"
-  }],
-
-  "events": [{
-    "uid": "can_emul/can0",
-    "action": "lua://can_app#_evt_catcher_"
-  }]
+  "plugins": [
+    {
+      "uid": "can_app",
+      "info": "Plugin to handle interface with can_app",
+      "spath": "./lib/plugins:./var",
+      "libs": [
+        "can_app.ctlso",
+        "can_app.lua"
+      ]
+    }
+  ],
+  "onload": [
+    {
+      "uid": "can_app/run_onload",
+      "action": "lua://can_app#_run_onload_"
+    }
+  ],
+  "controls": [
+    {
+      "uid": "ping",
+      "action": "plugin://can_app#ping"
+    },
+    {
+      "uid": "start",
+      "action": "lua://can_app#_start_app_"
+    }
+  ],
+  "events": [
+    {
+      "uid": "can_emul/can0",
+      "action": "lua://can_app#_evt_catcher_"
+    }
+  ]
 }

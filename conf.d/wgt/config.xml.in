@@ -11,4 +11,9 @@
   </feature>
   <feature name="urn:AGL:widget:required-api">
   </feature>
+
+  <feature name="urn:AGL:widget:required-binding">
+    <param name="lib/afb-agl_services_mockup.so" value="local" />
+  </feature>
+
 </widget>

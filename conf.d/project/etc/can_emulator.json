@@ -6,22 +6,25 @@
     "api": "can_emul",
     "info": "Test for XDS Data collection binding"
   },
-  "plugins": [{
-    "uid": "can_emul",
-    "info": "Plugin to handle interface with can_emul",
-    "spath": "./lib/plugins:./var",
-    "libs": [
-      "can_emulator.ctlso",
-      "can_emulator.lua"
-    ]
-  }],
-
-  "onload": [{
-    "uid": "can_emul/_run_onload",
-    "action": "lua://can_emul#_run_onload_"
-  }],
-
-  "controls": [{
+  "plugins": [
+    {
+      "uid": "can_emul",
+      "info": "Plugin to handle interface with can_emul",
+      "spath": "./lib/plugins:./var",
+      "libs": [
+        "can_emulator.ctlso",
+        "can_emulator.lua"
+      ]
+    }
+  ],
+  "onload": [
+    {
+      "uid": "can_emul/_run_onload",
+      "action": "lua://can_emul#_run_onload_"
+    }
+  ],
+  "controls": [
+    {
       "uid": "ping",
       "action": "plugin://can_emul#ping"
     },
@@ -38,9 +41,10 @@
       "action": "lua://can_emul#_status_can_"
     }
   ],
-
-  "events": [{
-    "uid": "can_emul/can0",
-    "action": "lua://can_emul#_evt_catcher_"
-  }]
+  "events": [
+    {
+      "uid": "can_emul/can0",
+      "action": "lua://can_emul#_evt_catcher_"
+    }
+  ]
 }

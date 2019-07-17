@@ -57,7 +57,8 @@
         "supervisor-api.h": "c",
         "string_view": "c",
         "initializer_list": "c",
-        "valarray": "c"
+        "valarray": "c",
+        "agl_services_mockup-binding.h": "c"
     },
     // Words to add to dictionary for a workspace.
     "cSpell.words": [
