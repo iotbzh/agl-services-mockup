@@ -1,7 +1,17 @@
 #!/bin/bash
 
 AGL_MOCKDIR="/tmp/agl_mockup"
-REPO_DIR=$(cd $(dirname $0) && pwd)
+MOCK_BINDING_INSTALL_DIR=$(cd $(dirname $0) && pwd)/build/package
+
+grep "Automotive Grade" /etc/os-release > /dev/null
+if [ "$?" == "0" ]; then
+    MOCK_BINDING_INSTALL_DIR="$(ls -d /var/local/lib/afm/applications/agl_services_mockup/*)"
+    if [ "$?" != "0" ]; then
+        echo "Cannot determine Mock binding directory !"
+        exit 1
+    fi
+fi
+
 
 if [ "$1" = "-d" ] || [ "$1" = "--dry" ]; then
     DRY="echo "
@@ -18,7 +28,7 @@ function daemon() {
     opts=$*
 
     CMD="afb-daemon --port=${port} --name=${name} \
-        --workdir=${REPO_DIR}/build/package --ldpaths=lib --roothttp=htdocs \
+        --workdir=${MOCK_BINDING_INSTALL_DIR} --ldpaths=lib --roothttp=htdocs \
         --token= ${opts}"
 
     echo -n "Start ${name}... "
